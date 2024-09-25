@@ -1,6 +1,5 @@
 # devops-project-infrastructure
 - This repo contains infrastructure code
-- Project manifest located here: https://github.com/devopsway/devops-project-manifest
 
 # How to use?
 1. Install terraform cli: https://developer.hashicorp.com/terraform/tutorials/aws-get-started/install-cli
@@ -12,7 +11,7 @@ gcloud auth application-default login --no-launch-browser
 ```
 5. Clone this repo:
 ```
-git clone https://github.com/devopsway/devops-project-infrastructure.git
+git clone https://github.com/htrungngx/terraform-infra.git
 ```
 6. `cd` in the folder
 ```

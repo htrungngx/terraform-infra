@@ -17,8 +17,8 @@ resource "google_project_service" "project" {
   service = "storage.googleapis.com"
 
   timeouts {
-    create = "30m"
-    update = "40m"
+    create = "20m"
+    update = "20m"
   }
 
   disable_dependent_services = true
@@ -29,8 +29,8 @@ resource "google_project_service" "compute" {
   service = "compute.googleapis.com"
 
   timeouts {
-    create = "30m"
-    update = "40m"
+    create = "20m"
+    update = "20m"
   }
 
   disable_dependent_services = true
@@ -40,7 +40,7 @@ resource "google_storage_bucket" "default" {
   name          = "dev-app-project-bucket-tfstate"
   project       = replace(google_project.my_project.id, "projects/", "")
   force_destroy = true
-  location      = "ASIA"
+  location      = "EU"
   storage_class = "STANDARD"
 
 
@@ -64,7 +64,7 @@ data "google_billing_account" "acct" {
 }
 
 resource "google_project" "my_project" {
-  name            = "dev-app-project"
-  project_id      = "${random_string.project_prefix.result}-dev-app-project"
+  name            = "gcp-htrung-project"
+  project_id      = "${random_string.project_prefix.result}-gcp-htrung-project"
   billing_account = data.google_billing_account.acct.id
 }

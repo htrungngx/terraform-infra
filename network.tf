@@ -9,10 +9,10 @@ resource "google_compute_firewall" "http" {
 
   allow {
     protocol = "tcp"
-    ports    = ["80", "443", "22"]
+    ports    = ["80", "443", "22", "8978", "8002",]
   }
 
-  target_tags   = ["web", "jenkins", "monitor"]
+  target_tags   = ["deployment", "database", "jfrog", "staging", "gitlab"]
   source_ranges = ["0.0.0.0/0"]
 
   log_config {
@@ -20,7 +20,6 @@ resource "google_compute_firewall" "http" {
   }
 
 }
-
 
 resource "google_compute_network" "network" {
   name    = "dev-network"
