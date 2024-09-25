@@ -26,7 +26,7 @@ resource "google_compute_instance" "deployment" {
   # metadata_startup_script = file("${path.module}/app-script/initial-script.sh")
 
   metadata = {
-    ssh-keys = "${var.ssh_user}:${file("${path.module}/ssh-keys/key.pub")}"
+    ssh-keys = "${var.ssh_user}:${file("${path.module}/ssh-keys/keys.pub")}"
   }
 
   lifecycle {
@@ -65,7 +65,7 @@ resource "google_compute_instance" "database-jfrog" {
   # metadata_startup_script = file("${path.module}/app-script/initial-script.sh")
 
   metadata = {
-    ssh-keys = "${var.ssh_user}:${file("${path.module}/ssh-keys/key.pub")}"
+    ssh-keys = "${var.ssh_user}:${file("${path.module}/ssh-keys/keys.pub")}"
   }
 
   lifecycle {
@@ -140,7 +140,7 @@ resource "google_compute_instance" "staging" {
   # metadata_startup_script = file("${path.module}/app-script/initial-script.sh")
     
   metadata = {
-    ssh-keys = "${var.ssh_user}:${file("${path.module}/ssh-keys/key.pub")}"
+    ssh-keys = "${var.ssh_user}:${file("${path.module}/ssh-keys/keys.pub")}"
   }
 
   lifecycle {
@@ -179,7 +179,7 @@ resource "google_compute_instance" "gitlab" {
   # metadata_startup_script = file("${path.module}/app-script/initial-script.sh")
 
   metadata = {
-    ssh-keys = "${var.ssh_user}:${file("${path.module}/ssh-keys/key.pub")}"
+    ssh-keys = "${var.ssh_user}:${file("${path.module}/ssh-keys/keys.pub")}"
   }
   
   lifecycle {
