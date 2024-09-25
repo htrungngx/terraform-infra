@@ -29,9 +29,6 @@ jobs:
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v1
 
-    # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
-    - name: Terraform Init
-      run: terraform init
 
     - name: setup gcloud CLI
       uses: google-github-actions/setup-gcloud@v2
@@ -40,6 +37,20 @@ jobs:
         # this is the json key of the service account created on the project
         service_account_key: ${{ secrets.GCP_CREDENTIALS }}  
         export_default_credentials: true
+
+    - name: 'Set up Cloud SDK'
+      uses: 'google-github-actions/setup-gcloud@v1'
+
+    - name: 'Setup google auth in multidirectory repo'
+      run: |  
+        echo "GOOGLE_APPLICATION_CREDENTIALS=$GITHUB_WORKSPACE/terraform/`ls -1 $GOOGLE_APPLICATION_CREDENTIALS | xargs basename`" >> $GITHUB_ENV
+        mv $GITHUB_WORKSPACE/gha-creds-*.json $GITHUB_WORKSPACE/terraform/
+
+    # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
+    - name: Terraform Init
+      run: terraform init
+
+
 
     # # Generates an execution plan for Terraform
     # - name: Terraform Plan
