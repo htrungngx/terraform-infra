@@ -16,3 +16,6 @@ variable "machine_type_small" {
 variable "machine_type_medium" {
   type    = string 
 }
+variable "ssh_user" {
+  type    = string 
+}
