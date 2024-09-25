@@ -1,9 +1,8 @@
 terraform {
-
-  # backend "gcs" {
-  #   bucket = "dev-app-project-bucket-tfstate"
-  #   prefix = "terraform/state"
-  # }
+  backend "gcs" {
+    bucket = "htrung-project-tfstate"
+    prefix = "terraform/state"
+  }
 
   required_providers {
     google = {
@@ -12,59 +11,57 @@ terraform {
   }
 }
 
-resource "google_project_service" "project" {
-  project = google_project.my_project.id
-  service = "storage.googleapis.com"
-
-  timeouts {
-    create = "20m"
-    update = "20m"
-  }
-
-  disable_dependent_services = true
+provider "google" {
+  project = var.project
+  region  = var.region
+  zone    = var.zone
 }
 
-resource "google_project_service" "compute" {
-  project = google_project.my_project.id
-  service = "compute.googleapis.com"
-
-  timeouts {
-    create = "20m"
-    update = "20m"
-  }
-
-  disable_dependent_services = true
+locals {
+  services = toset([
+    "iam.googleapis.com",                  # Identity and Access Management (IAM) API
+    "iamcredentials.googleapis.com",       # IAM Service Account Credentials API
+    "cloudresourcemanager.googleapis.com", # Cloud Resource Manager API
+    "sts.googleapis.com",                  # Security Token Service API
+    "compute.googleapis.com",
+    "storage.googleapis.com"
+  ])
+}
+resource "google_project_service" "service" {
+  for_each = local.services
+  project  = var.project
+  service  = each.value
+  disable_dependent_services = false
+  disable_on_destroy = false
 }
 
-resource "google_storage_bucket" "default" {
-  name          = "dev-app-project-bucket-tfstate"
-  project       = replace(google_project.my_project.id, "projects/", "")
-  force_destroy = true
-  location      = "EU"
-  storage_class = "STANDARD"
-
-
-  versioning {
-    enabled = true
-  }
+resource "time_sleep" "wait_for_services" {
+  depends_on = [google_project_service.service]
+  create_duration = "120s"  # Adjust the wait time if needed
 }
 
-resource "random_string" "project_prefix" {
-  length  = 8
-  special = false
-  numeric = false
-  lower   = true
-  upper   = false
 
-}
 
-data "google_billing_account" "acct" {
-  display_name = "My Billing Account"
-  open         = true
-}
+# resource "google_project_service" "project" {
+#   project = google_project.my_project.id
+#   service = "storage.googleapis.com"
 
-resource "google_project" "my_project" {
-  name            = "gcp-htrung-project"
-  project_id      = "${random_string.project_prefix.result}-gcp-htrung-project"
-  billing_account = data.google_billing_account.acct.id
-}
+#   timeouts {
+#     create = "20m"
+#     update = "20m"
+#   }
+
+#   disable_dependent_services = true
+# }
+
+# resource "google_project_service" "compute" {
+#   project = google_project.my_project.id
+#   service = "compute.googleapis.com"
+
+#   timeouts {
+#     create = "20m"
+#     update = "20m"
+#   }
+
+#   disable_dependent_services = true
+# }

@@ -1,9 +1,10 @@
 resource "google_compute_instance" "deployment" {
-  project                   = google_project.my_project.project_id
+  project                   = var.project
   name                      = "dev-deployment-vm"
-  machine_type              = "e2-medium"
-  zone                      = "europe-west2-b"
+  machine_type              = var.machine_type_small
+  zone                      = var.zone
   allow_stopping_for_update = true
+  depends_on = [ google_project_service.service, time_sleep.wait_for_services ]
 
   boot_disk {
     initialize_params {
@@ -13,7 +14,7 @@ resource "google_compute_instance" "deployment" {
   }
   network_interface {
     subnetwork         = google_compute_network.network.name
-    subnetwork_project = google_project.my_project.project_id
+    subnetwork_project = var.project
 
     access_config {
       nat_ip = google_compute_address.dev_static_ip.address
@@ -37,11 +38,12 @@ resource "google_compute_instance" "deployment" {
 }
 
 resource "google_compute_instance" "database-jfrog" {
-  project                   = google_project.my_project.project_id
+  project                   = var.project
   name                      = "dev-database-jfrog-vm"
-  machine_type              = "e2-medium"
-  zone                      = "europe-west2-b"
+  machine_type              = var.machine_type_medium
+  zone                      = var.zone
   allow_stopping_for_update = true
+  depends_on = [ google_project_service.service, time_sleep.wait_for_services ]
 
   boot_disk {
     initialize_params {
@@ -51,8 +53,7 @@ resource "google_compute_instance" "database-jfrog" {
   }
   network_interface {
     subnetwork         = google_compute_network.network.name
-    subnetwork_project = google_project.my_project.project_id
-
+    subnetwork_project = var.project
 
     access_config {
       nat_ip = google_compute_address.dev_database_static_ip.address
@@ -111,11 +112,12 @@ resource "google_compute_instance" "database-jfrog" {
 # }
 
 resource "google_compute_instance" "staging" {
-  project                   = google_project.my_project.project_id
+  project                   = var.project
   name                      = "dev-staging-vm"
-  machine_type              = "e2-small"
-  zone                      = "europe-west2-b"
+  machine_type              = var.machine_type_small
+  zone                      = var.zone
   allow_stopping_for_update = true
+  depends_on = [ google_project_service.service, time_sleep.wait_for_services ]
 
   boot_disk {
     initialize_params {
@@ -125,7 +127,7 @@ resource "google_compute_instance" "staging" {
   }
   network_interface {
     subnetwork         = google_compute_network.network.name
-    subnetwork_project = google_project.my_project.project_id
+    subnetwork_project = var.project
 
 
     access_config {
@@ -149,11 +151,12 @@ resource "google_compute_instance" "staging" {
 
 }
 resource "google_compute_instance" "gitlab" {
-  project                   = google_project.my_project.project_id
+  project                   = var.project
   name                      = "dev-gitlab-vm"
-  machine_type              = "e2-medium"
-  zone                      = "europe-west2-b"
+  machine_type              = var.machine_type_medium
+  zone                      = var.zone
   allow_stopping_for_update = true
+  depends_on = [ google_project_service.service, time_sleep.wait_for_services ]
 
   boot_disk {
     initialize_params {
@@ -163,7 +166,7 @@ resource "google_compute_instance" "gitlab" {
   }
   network_interface {
     subnetwork         = google_compute_network.network.name
-    subnetwork_project = google_project.my_project.project_id
+    subnetwork_project = var.project
 
 
     access_config {

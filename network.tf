@@ -1,8 +1,12 @@
+resource "google_compute_network" "network" {
+  name    = "dev-network"
+  project = var.project
+}
+
 resource "google_compute_firewall" "http" {
   name    = "dev-firewall"
   network = google_compute_network.network.name
-  project = google_project.my_project.project_id
-
+  project = var.project
   allow {
     protocol = "icmp"
   }
@@ -21,7 +25,4 @@ resource "google_compute_firewall" "http" {
 
 }
 
-resource "google_compute_network" "network" {
-  name    = "dev-network"
-  project = google_project.my_project.project_id
-}
+
