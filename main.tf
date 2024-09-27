@@ -40,7 +40,7 @@ resource "google_compute_instance" "deployment" {
 resource "google_compute_instance" "database-jfrog" {
   project                   = var.project
   name                      = "dev-database-jfrog-vm"
-  machine_type              = var.machine_type_medium
+  machine_type              = "e2-standard-2"
   zone                      = var.zone
   allow_stopping_for_update = true
   depends_on = [ google_project_service.service, time_sleep.wait_for_services ]
@@ -113,8 +113,8 @@ resource "google_compute_instance" "database-jfrog" {
 
 resource "google_compute_instance" "staging" {
   project                   = var.project
-  name                      = "dev-staging-vm"
-  machine_type              = var.machine_type_small
+  name                      = "dev-staging-building-vm"
+  machine_type              = "e2-medium"
   zone                      = var.zone
   allow_stopping_for_update = true
   depends_on = [ google_project_service.service, time_sleep.wait_for_services ]
@@ -153,7 +153,7 @@ resource "google_compute_instance" "staging" {
 resource "google_compute_instance" "gitlab" {
   project                   = var.project
   name                      = "dev-gitlab-vm"
-  machine_type              = var.machine_type_medium
+  machine_type              = "e2-standard-4"
   zone                      = var.zone
   allow_stopping_for_update = true
   depends_on = [ google_project_service.service, time_sleep.wait_for_services ]
