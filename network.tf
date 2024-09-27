@@ -13,7 +13,7 @@ resource "google_compute_firewall" "http" {
 
   allow {
     protocol = "tcp"
-    ports    = ["80", "443", "22", "8978", "8082", "1433", "3000", "5241", "8081", "8978" ]
+    ports    = ["80", "443", "22", "8978", "8082", "1433", "3000", "5214", "8081", "8978" ]
   }
 
   target_tags   = ["deployment", "database", "jfrog", "staging", "gitlab"]
