@@ -1,7 +1,7 @@
 resource "google_compute_instance" "deployment" {
   project                   = var.project
   name                      = "dev-deployment-vm"
-  machine_type              = var.machine_type_small
+  machine_type              = "e2-standard-2"
   zone                      = var.zone
   allow_stopping_for_update = true
   depends_on = [ google_project_service.service, time_sleep.wait_for_services ]
