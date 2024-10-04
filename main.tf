@@ -37,10 +37,10 @@ resource "google_compute_instance" "deployment" {
 
 }
 
-resource "google_compute_instance" "database-jfrog" {
+resource "google_compute_instance" "database-jenkins" {
   project                   = var.project
-  name                      = "dev-database-jfrog-vm"
-  machine_type              = "e2-standard-2"
+  name                      = "dev-database-jenkins-vm"
+  machine_type              = "e2-medium"
   zone                      = var.zone
   allow_stopping_for_update = true
   depends_on = [ google_project_service.service, time_sleep.wait_for_services ]
@@ -122,7 +122,7 @@ resource "google_compute_instance" "staging" {
   boot_disk {
     initialize_params {
       image = "ubuntu-os-cloud/ubuntu-2204-lts"
-      size  = 30
+      size  = 60
     }
   }
   network_interface {
