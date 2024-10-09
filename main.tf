@@ -201,7 +201,7 @@ resource "google_compute_instance" "k8s-master" {
 
   boot_disk {
     initialize_params {
-      image = "ubuntu-os-cloud/ubuntu-2404-lts"
+      image = "ubuntu-os-cloud/ubuntu-2204-lts"
       size  = 30
     }
   }
@@ -240,7 +240,7 @@ resource "google_compute_instance" "k8s-node1" {
 
   boot_disk {
     initialize_params {
-      image = "ubuntu-os-cloud/ubuntu-2404-lts"
+      image = "ubuntu-os-cloud/ubuntu-2204-lts"
       size  = 20
     }
   }
@@ -279,7 +279,7 @@ resource "google_compute_instance" "k8s-node2" {
 
   boot_disk {
     initialize_params {
-      image = "ubuntu-os-cloud/ubuntu-2404-lts"
+      image = "ubuntu-os-cloud/ubuntu-2204-lts"
       size  = 20
     }
   }
@@ -318,7 +318,7 @@ resource "google_compute_instance" "k8s-node3" {
 
   boot_disk {
     initialize_params {
-      image = "ubuntu-os-cloud/ubuntu-2404-lts"
+      image = "ubuntu-os-cloud/ubuntu-2204-lts"
       size  = 20
     }
   }
