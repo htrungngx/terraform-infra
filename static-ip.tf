@@ -27,20 +27,20 @@ resource "google_compute_address" "dev_gitlab_static_ip" {
 resource "google_compute_address" "k8s_master_static_ip" {
   name    = "k8s-master-static-ip"
   project = var.project
-  region  = "europe-north1-c"
+  region  = "europe-west1"
 }
 resource "google_compute_address" "k8s_node1_static_ip" {
   name    = "k8s-node1-static-ip"
   project = var.project
-  region  = "europe-north1-c"
+  region  = "europe-west1"
 }
 resource "google_compute_address" "k8s_node2_static_ip" {
   name    = "k8s-node2-static-ip"
   project = var.project
-  region  = "europe-north1-c"
+  region  = "europe-west1"
 }
 resource "google_compute_address" "k8s_node3_static_ip" {
   name    = "k8s-node3-static-ip"
   project = var.project
-  region  = "europe-north1-c"
+  region  = "europe-west1"
 }

@@ -195,7 +195,7 @@ resource "google_compute_instance" "k8s-master" {
   project                   = var.project
   name                      = "k8s-master"
   machine_type              = var.machine_type_medium
-  zone                      = "europe-north1-c"
+  zone                      = "europe-west1-a"
   allow_stopping_for_update = true
   depends_on                = [google_project_service.service, time_sleep.wait_for_services]
 
@@ -234,7 +234,7 @@ resource "google_compute_instance" "k8s-node1" {
   project                   = var.project
   name                      = "k8s-node1"
   machine_type              = var.machine_type_small
-  zone                      = "europe-north1-c"
+  zone                      = "europe-west1-a"
   allow_stopping_for_update = true
   depends_on                = [google_project_service.service, time_sleep.wait_for_services]
 
@@ -273,7 +273,7 @@ resource "google_compute_instance" "k8s-node2" {
   project                   = var.project
   name                      = "k8s-node2"
   machine_type              = var.machine_type_small
-  zone                      = "europe-north1-c"
+  zone                      = "europe-west1-a"
   allow_stopping_for_update = true
   depends_on                = [google_project_service.service, time_sleep.wait_for_services]
 
@@ -312,7 +312,7 @@ resource "google_compute_instance" "k8s-node3" {
   project                   = var.project
   name                      = "k8s-node3"
   machine_type              = var.machine_type_small
-  zone                      = "europe-north1-c"
+  zone                      = "europe-west1-a"
   allow_stopping_for_update = true
   depends_on                = [google_project_service.service, time_sleep.wait_for_services]
 
