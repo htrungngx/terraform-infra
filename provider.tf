@@ -28,16 +28,16 @@ locals {
   ])
 }
 resource "google_project_service" "service" {
-  for_each = local.services
-  project  = var.project
-  service  = each.value
+  for_each                   = local.services
+  project                    = var.project
+  service                    = each.value
   disable_dependent_services = false
-  disable_on_destroy = false
+  disable_on_destroy         = false
 }
 
 resource "time_sleep" "wait_for_services" {
-  depends_on = [google_project_service.service]
-  create_duration = "120s"  # Adjust the wait time if needed
+  depends_on      = [google_project_service.service]
+  create_duration = "120s" # Adjust the wait time if needed
 }
 
 

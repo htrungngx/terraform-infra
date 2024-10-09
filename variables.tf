@@ -1,21 +1,21 @@
 variable "project" {
-  type    = string
+  type = string
 }
 
 variable "region" {
-  type    = string
+  type = string
 }
 
 variable "zone" {
-  type    = string
+  type = string
 }
 
 variable "machine_type_small" {
-  type    = string 
+  type = string
 }
 variable "machine_type_medium" {
-  type    = string 
+  type = string
 }
 variable "ssh_user" {
-  type    = string 
+  type = string
 }
