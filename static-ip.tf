@@ -23,7 +23,7 @@
 #   name    = "dev-gitlab-static-ip"
 #   project = var.project
 #   region  = var.region
-}
+# }
 resource "google_compute_address" "k8s_master_static_ip" {
   name    = "k8s-master-static-ip"
   project = var.project
