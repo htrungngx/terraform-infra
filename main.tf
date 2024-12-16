@@ -1,80 +1,80 @@
-resource "google_compute_instance" "deployment" {
-  project                   = var.project
-  name                      = "dev-deployment-vm"
-  machine_type              = "e2-standard-2"
-  zone                      = var.zone
-  allow_stopping_for_update = true
-  depends_on                = [google_project_service.service, time_sleep.wait_for_services]
+# resource "google_compute_instance" "deployment" {
+#   project                   = var.project
+#   name                      = "dev-deployment-vm"
+#   machine_type              = "e2-standard-2"
+#   zone                      = var.zone
+#   allow_stopping_for_update = true
+#   depends_on                = [google_project_service.service, time_sleep.wait_for_services]
 
-  boot_disk {
-    initialize_params {
-      image = "ubuntu-os-cloud/ubuntu-2204-lts"
-      size  = 30
-    }
-  }
-  network_interface {
-    subnetwork         = google_compute_network.network.name
-    subnetwork_project = var.project
+#   boot_disk {
+#     initialize_params {
+#       image = "ubuntu-os-cloud/ubuntu-2204-lts"
+#       size  = 30
+#     }
+#   }
+#   network_interface {
+#     subnetwork         = google_compute_network.network.name
+#     subnetwork_project = var.project
 
-    access_config {
-      nat_ip = google_compute_address.dev_static_ip.address
-    }
-  }
+#     access_config {
+#       nat_ip = google_compute_address.dev_static_ip.address
+#     }
+#   }
 
-  tags = ["deployment"]
+#   tags = ["deployment"]
 
-  # metadata_startup_script = file("${path.module}/app-script/initial-script.sh")
+#   # metadata_startup_script = file("${path.module}/app-script/initial-script.sh")
 
-  metadata = {
-    ssh-keys = "${var.ssh_user}:${file("${path.module}/ssh-keys/keys.pub")}"
-  }
+#   metadata = {
+#     ssh-keys = "${var.ssh_user}:${file("${path.module}/ssh-keys/keys.pub")}"
+#   }
 
-  lifecycle {
-    ignore_changes = [
-      metadata
-    ]
-  }
+#   lifecycle {
+#     ignore_changes = [
+#       metadata
+#     ]
+#   }
 
-}
+# }
 
-resource "google_compute_instance" "database-jenkins" {
-  project                   = var.project
-  name                      = "dev-database-jenkins-vm"
-  machine_type              = "e2-medium"
-  zone                      = var.zone
-  allow_stopping_for_update = true
-  depends_on                = [google_project_service.service, time_sleep.wait_for_services]
+# resource "google_compute_instance" "database-jenkins" {
+#   project                   = var.project
+#   name                      = "dev-database-jenkins-vm"
+#   machine_type              = "e2-medium"
+#   zone                      = var.zone
+#   allow_stopping_for_update = true
+#   depends_on                = [google_project_service.service, time_sleep.wait_for_services]
 
-  boot_disk {
-    initialize_params {
-      image = "ubuntu-os-cloud/ubuntu-2204-lts"
-      size  = 30
-    }
-  }
-  network_interface {
-    subnetwork         = google_compute_network.network.name
-    subnetwork_project = var.project
+#   boot_disk {
+#     initialize_params {
+#       image = "ubuntu-os-cloud/ubuntu-2204-lts"
+#       size  = 30
+#     }
+#   }
+#   network_interface {
+#     subnetwork         = google_compute_network.network.name
+#     subnetwork_project = var.project
 
-    access_config {
-      nat_ip = google_compute_address.dev_database_static_ip.address
-    }
-  }
+#     access_config {
+#       nat_ip = google_compute_address.dev_database_static_ip.address
+#     }
+#   }
 
-  tags = ["database"]
+#   tags = ["database"]
 
-  # metadata_startup_script = file("${path.module}/app-script/initial-script.sh")
+#   # metadata_startup_script = file("${path.module}/app-script/initial-script.sh")
 
-  metadata = {
-    ssh-keys = "${var.ssh_user}:${file("${path.module}/ssh-keys/keys.pub")}"
-  }
+#   metadata = {
+#     ssh-keys = "${var.ssh_user}:${file("${path.module}/ssh-keys/keys.pub")}"
+#   }
 
-  lifecycle {
-    ignore_changes = [
-      metadata
-    ]
-  }
+#   lifecycle {
+#     ignore_changes = [
+#       metadata
+#     ]
+#   }
 
-}
+# }
 
 # resource "google_compute_instance" "jfrog" {
 #   project                   = google_project.my_project.project_id
@@ -111,84 +111,84 @@ resource "google_compute_instance" "database-jenkins" {
 
 # }
 
-resource "google_compute_instance" "staging" {
-  project                   = var.project
-  name                      = "dev-staging-building-vm"
-  machine_type              = "e2-medium"
-  zone                      = var.zone
-  allow_stopping_for_update = true
-  depends_on                = [google_project_service.service, time_sleep.wait_for_services]
+# resource "google_compute_instance" "staging" {
+#   project                   = var.project
+#   name                      = "dev-staging-building-vm"
+#   machine_type              = "e2-medium"
+#   zone                      = var.zone
+#   allow_stopping_for_update = true
+#   depends_on                = [google_project_service.service, time_sleep.wait_for_services]
 
-  boot_disk {
-    initialize_params {
-      image = "ubuntu-os-cloud/ubuntu-2204-lts"
-      size  = 60
-    }
-  }
-  network_interface {
-    subnetwork         = google_compute_network.network.name
-    subnetwork_project = var.project
-
-
-    access_config {
-      nat_ip = google_compute_address.dev_staging_static_ip.address
-    }
-  }
-
-  tags = ["staging"]
-
-  # metadata_startup_script = file("${path.module}/app-script/initial-script.sh")
-
-  metadata = {
-    ssh-keys = "${var.ssh_user}:${file("${path.module}/ssh-keys/keys.pub")}"
-  }
-
-  lifecycle {
-    ignore_changes = [
-      metadata
-    ]
-  }
-
-}
-resource "google_compute_instance" "gitlab" {
-  project                   = var.project
-  name                      = "dev-gitlab-vm"
-  machine_type              = "e2-standard-4"
-  zone                      = var.zone
-  allow_stopping_for_update = true
-  depends_on                = [google_project_service.service, time_sleep.wait_for_services]
-
-  boot_disk {
-    initialize_params {
-      image = "ubuntu-os-cloud/ubuntu-2204-lts"
-      size  = 30
-    }
-  }
-  network_interface {
-    subnetwork         = google_compute_network.network.name
-    subnetwork_project = var.project
+#   boot_disk {
+#     initialize_params {
+#       image = "ubuntu-os-cloud/ubuntu-2204-lts"
+#       size  = 60
+#     }
+#   }
+#   network_interface {
+#     subnetwork         = google_compute_network.network.name
+#     subnetwork_project = var.project
 
 
-    access_config {
-      nat_ip = google_compute_address.dev_gitlab_static_ip.address
-    }
-  }
+#     access_config {
+#       nat_ip = google_compute_address.dev_staging_static_ip.address
+#     }
+#   }
 
-  tags = ["gitlab"]
+#   tags = ["staging"]
 
-  # metadata_startup_script = file("${path.module}/app-script/initial-script.sh")
+#   # metadata_startup_script = file("${path.module}/app-script/initial-script.sh")
 
-  metadata = {
-    ssh-keys = "${var.ssh_user}:${file("${path.module}/ssh-keys/keys.pub")}"
-  }
+#   metadata = {
+#     ssh-keys = "${var.ssh_user}:${file("${path.module}/ssh-keys/keys.pub")}"
+#   }
 
-  lifecycle {
-    ignore_changes = [
-      metadata
-    ]
-  }
+#   lifecycle {
+#     ignore_changes = [
+#       metadata
+#     ]
+#   }
 
-}
+# }
+# resource "google_compute_instance" "gitlab" {
+#   project                   = var.project
+#   name                      = "dev-gitlab-vm"
+#   machine_type              = "e2-standard-4"
+#   zone                      = var.zone
+#   allow_stopping_for_update = true
+#   depends_on                = [google_project_service.service, time_sleep.wait_for_services]
+
+#   boot_disk {
+#     initialize_params {
+#       image = "ubuntu-os-cloud/ubuntu-2204-lts"
+#       size  = 30
+#     }
+#   }
+#   network_interface {
+#     subnetwork         = google_compute_network.network.name
+#     subnetwork_project = var.project
+
+
+#     access_config {
+#       nat_ip = google_compute_address.dev_gitlab_static_ip.address
+#     }
+#   }
+
+#   tags = ["gitlab"]
+
+#   # metadata_startup_script = file("${path.module}/app-script/initial-script.sh")
+
+#   metadata = {
+#     ssh-keys = "${var.ssh_user}:${file("${path.module}/ssh-keys/keys.pub")}"
+#   }
+
+#   lifecycle {
+#     ignore_changes = [
+#       metadata
+#     ]
+#   }
+
+# }
 
 ###################### SIDE PROJECT ##################################
 resource "google_compute_instance" "k8s-master" {
