@@ -194,7 +194,7 @@
 resource "google_compute_instance" "k8s-master" {
   project                   = var.project
   name                      = "k8s-master"
-  machine_type              = var.machine_type_medium
+  machine_type              = var.machine_type_small
   zone                      = "europe-west1-b"
   allow_stopping_for_update = true
   depends_on                = [google_project_service.service, time_sleep.wait_for_services]
