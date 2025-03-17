@@ -2,7 +2,7 @@ name: 'Terraform'
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "main", "test1" ]
   pull_request:
 
   workflow_dispatch:
@@ -11,15 +11,6 @@ jobs:
   terraform:
     name: 'Terraform'
     runs-on: ubuntu-latest
-    environment: production
-
-    # Use the Bash shell regardless whether the GitHub Actions runner is ubuntu-latest, macos-latest, or windows-latest
-    defaults:
-      run:
-        shell: bash
-    
-    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-
     steps:
     # Checkout the repository to the GitHub Actions runner
     - name: Checkout
@@ -27,43 +18,8 @@ jobs:
 
     # Install the latest version of Terraform CLI and configure the Terraform CLI configuration file with a Terraform Cloud user API token
     - name: Setup Terraform
-      uses: hashicorp/setup-terraform@v1
-
-
-    - name: setup gcloud CLI
-      uses: google-github-actions/setup-gcloud@v2
-      with:
-        project_id: ${{ secrets.GCP_PROJECT }}
-        # this is the json key of the service account created on the project
-        service_account_key: ${{ secrets.GCP_CREDENTIALS }}  
-        export_default_credentials: true
-
-    - name: 'Set up Cloud SDK'
-      uses: 'google-github-actions/setup-gcloud@v1'
-
-    - name: Terraform Init
-      run: terraform init -upgrade
-      env:
-        GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }} 
-
-
-
-    # # Generates an execution plan for Terraform
-    # - name: Terraform Plan
-    #   run: terraform plan -input=false
-    #   env:
-    #     GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
-
-      # On push to "main", build or change infrastructure according to Terraform configuration files
-      # Note: It is recommended to set up a required "strict" status check in your repository for "Terraform Cloud". See the documentation on "strict" required status checks for more information: https://help.github.com/en/github/administering-a-repository/types-of-required-status-checks
-    - name: Terraform Apply
-      if: github.ref == 'refs/heads/main' && github.event_name == 'push' && contains(github.event.commits[0].message, '[implement]')
-      run: terraform apply -auto-approve -input=false
-      env:
-        GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
-
-    - name: Terraform Destroy
-      if: github.ref == 'refs/heads/main' && github.event_name == 'push' && contains(github.event.commits[0].message, '[destroy]')
-      run: terraform destroy -auto-approve -input=false
-      env:
-        GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
+      uses: hashicorp/setup-terraform@v3
+    - name: Terraform fmt
+      run: terraform fmt
+    - name: Terraform validate
+      run: terraform validate
